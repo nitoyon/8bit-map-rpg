@@ -39,8 +39,11 @@ div.footer{ margin-top: 2em; }
     <button value="d">down</button><br>
   </div>
   <div class="footer">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">tweet</a>
-    <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftech.nitoyon.com%2Fjavascript%2Fapplication%2Fracing%2F5%2F&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
+    <div class="share_buttons">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">tweet</a>
+      <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftech.nitoyon.com%2Fjavascript%2Fapplication%2Fracing%2F5%2F&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
+    </div>
+    <p><a href="https://github.com/nitoyon/8bit-map-rpg">Source code</a></p>
   </div>
 </body>
 <script type="text/javascript">
@@ -63,8 +66,6 @@ pageTracker._trackPageview();
             id && (js.id = id);
             fjs.parentNode.insertBefore(js, fjs);
         };
-    // Facebook SDK
-    add('//connect.facebook.net/en_US/all.js', 'facebook-jssdk');
     // Twitter SDK
     add('//platform.twitter.com/widgets.js', 'twitter-wjs');
 }(document, 'script'));
