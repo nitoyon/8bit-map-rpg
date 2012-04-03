@@ -2,27 +2,45 @@
 <html DIR="LTR">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"  /> <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>DQ MAPS</title>
+<title>8-bit Maps RPG</title>
 <style>
 div#game_main{
   position: relative;
 }
 div#game_main, div#map_canvas{
-  width: 500px;
-  height: 400px;
+  width: 320px;
+  height: 240px;
 }
-#character{position:absolute; left:234px; top:212px; width: 16px; height: 16px; z-index:99; overflow: hidden}
+#character{position:absolute; left:152px; top:112px; width: 16px; height: 16px; z-index:99; overflow: hidden}
 #character img{position: relative; top: 32px;}
+.control{
+  width: 20em;
+  margin: .5em 0;
+  text-align: center;
+}
+.control button {
+  width: 5em; height: 2.5em;
+}
+div.footer{ margin-top: 2em; }
 </style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="data.js"></script>
 <script type="text/javascript" src="maps.js"></script>
 </head>
 <body onload="initialize()">
-  <h1>8-bit Google Maps RPG</h1>
+  <h1>8-bit Maps RPG</h1>
   <div id="game_main">
     <div id="character"><img src="valiant.gif" width="16" height="128"></div>
     <div id="map_canvas"></div>
+  </div>
+  <div class="control">
+    <button value="u">up</button><br>
+    <button value="l">left</button><button value="r">right</button><br>
+    <button value="d">down</button><br>
+  </div>
+  <div class="footer">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">tweet</a>
+    <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftech.nitoyon.com%2Fjavascript%2Fapplication%2Fracing%2F5%2F&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
   </div>
 </body>
 <script type="text/javascript">
@@ -34,4 +52,21 @@ try {
 var pageTracker = _gat._getTracker("UA-1616138-1");
 pageTracker._trackPageview();
 } catch(err) {}</script>
+<script type="text/javascript">
+(function(doc, script) {
+    var js,
+        fjs = doc.getElementsByTagName(script)[0],
+        add = function(url, id) {
+            if (doc.getElementById(id)) {return;}
+            js = doc.createElement(script);
+            js.src = url;
+            id && (js.id = id);
+            fjs.parentNode.insertBefore(js, fjs);
+        };
+    // Facebook SDK
+    add('//connect.facebook.net/en_US/all.js', 'facebook-jssdk');
+    // Twitter SDK
+    add('//platform.twitter.com/widgets.js', 'twitter-wjs');
+}(document, 'script'));
+</script>
 </html>

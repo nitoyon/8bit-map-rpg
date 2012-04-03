@@ -11,7 +11,7 @@ function initialize() {
 	    isPng: true	
 	};
 	var _8bitMapType = new google.maps.ImageMapType(_8bitTile);
-	var myLatlng = new google.maps.LatLng(51.094213,2.18938);
+	var myLatlng = new google.maps.LatLng(50.994213,1.76938);
 	var myOptions = {
 	    zoom: 5,
 	    center: myLatlng,
@@ -28,7 +28,7 @@ function initialize() {
 	var INTERVAL = 300;
 	var direction = 2;
 	var pressing = false;
-	var x = 258, y = 171;
+	var x = 258, y = 170;
 
 	function keyHandler(evt, flag){
 	    evt = evt ? evt : window.event;
@@ -57,6 +57,20 @@ function initialize() {
 	    return false;
 	}
 
+	function clickHandler(e){
+	    e = e ? e : window.event;
+	    if (e.target.tagName != "BUTTON") return;
+	    switch (e.target.value){
+	    case "u": direction = 0; break;
+	    case "l": direction = 3; break;
+	    case "r": direction = 1; break;
+	    case "d": direction = 2; break;
+	    }
+	    pressing = true;
+	    update();
+	    pressing = false;
+	}
+
 	var draw_direction = direction;
 	var prev_move_time = null;
 	var update_flag = false;
@@ -71,7 +85,6 @@ function initialize() {
 		var new_x = diff_x + x;
 		var new_y = diff_y + y;
 
-		console.log(new_x, new_y, map_data.substr(new_x - 10 + new_y * 512, 20));
 		if (map_data.charAt(new_x + new_y * 512) != '0'){
 		    new_x = x;
 		    new_y = y;
@@ -92,6 +105,10 @@ function initialize() {
 
 	document.onkeydown = function(e){return keyHandler(e, true);};
 	document.onkeyup = function(e){return keyHandler(e, false);};
+	var buttons = document.getElementsByTagName("button");
+	for (var i = 0; i < buttons.length; i++) {
+	    buttons[i].onclick = function(e){clickHandler(e);}
+	}
 	update();
     }
 
