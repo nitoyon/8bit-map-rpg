@@ -4,8 +4,9 @@ function initialize() {
 	// refered http://blog.bn.ee/2012/03/31/how-to-use-google-maps-8-bit-tiles-in-your-own-project/
 	var _8bitTile = {
 	    getTileUrl: function(coord, zoom) {
+		var t = Math.pow(2, zoom);
 		return "http://mt1.google.com/vt/lyrs=8bit,m@174000000&hl=en&src=app&s=Galil&" +
-		    "z=" + zoom + "&x=" + ((coord.x + 32) % 32) + "&y=" + ((coord.y + 32) % 32);
+		    "z=" + zoom + "&x=" + ((coord.x + t) % t) + "&y=" + ((coord.y + t) % t);
 	    },
 	    tileSize: new google.maps.Size(256, 256),
 	    isPng: true	
@@ -57,7 +58,7 @@ function initialize() {
 	    return false;
 	}
 
-	function clickHandler(e){
+	function clickHandler(e, down){
 	    e = e ? e : window.event;
 	    if (e.target.tagName != "BUTTON") return;
 	    switch (e.target.value){
@@ -66,9 +67,8 @@ function initialize() {
 	    case "r": direction = 1; break;
 	    case "d": direction = 2; break;
 	    }
-	    pressing = true;
+	    pressing = down;
 	    update();
-	    pressing = false;
 	}
 
 	var draw_direction = direction;
@@ -85,7 +85,8 @@ function initialize() {
 		var new_x = diff_x + x;
 		var new_y = diff_y + y;
 
-		if (map_data.charAt(new_x + new_y * 512) != '0'){
+		var c = map_data.charAt(new_x + new_y * 512);
+		if (c == '1' || c == '2'){
 		    new_x = x;
 		    new_y = y;
 		    diff_x = diff_y = 0;
@@ -107,7 +108,8 @@ function initialize() {
 	document.onkeyup = function(e){return keyHandler(e, false);};
 	var buttons = document.getElementsByTagName("button");
 	for (var i = 0; i < buttons.length; i++) {
-	    buttons[i].onclick = function(e){clickHandler(e);}
+	    buttons[i].onmousedown = function(e){clickHandler(e, true);}
+	    buttons[i].onmouseup = function(e){clickHandler(e, false);}
 	}
 	update();
     }
