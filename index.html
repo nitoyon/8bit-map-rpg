@@ -9,21 +9,34 @@ div#game_main{
 }
 div#game_main, div#map_canvas{
   width: 320px;
+}
+div#map_canvas{
   height: 240px;
 }
 #character{position:absolute; left:152px; top:112px; width: 16px; height: 16px; z-index:99; overflow: hidden}
 #character img{position: relative; top: 32px;}
-.control{
-  width: 20em;
+
+#game_bottom{
   margin: .5em 0;
+  position: relative;
+}
+#game_control{
+  width: 10em;
   text-align: center;
 }
-.control button {
+#game_control button {
   width: 5em; height: 2.5em;
 }
+#game_status {
+  position: absolute;
+  top: 0;
+  left: 11em;
+}
+
 div.footer{ margin-top: 2em; }
 </style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="data.js"></script>
 <script type="text/javascript" src="maps.js"></script>
 </head>
@@ -32,11 +45,17 @@ div.footer{ margin-top: 2em; }
   <div id="game_main">
     <div id="character"><img src="valiant.gif" width="16" height="128"></div>
     <div id="map_canvas"></div>
-  </div>
-  <div class="control">
-    <button value="u">up</button><br>
-    <button value="l">left</button><button value="r">right</button><br>
-    <button value="d">down</button><br>
+
+    <div id="game_bottom">
+      <div id="game_control">
+	<button value="u">up</button><br>
+	<button value="l">left</button><button value="r">right</button><br>
+	<button value="d">down</button><br>
+      </div>
+      <div id="game_status">
+	<span id="check_points"></span>
+      </div>
+    </div>
   </div>
   <div class="footer">
     <div class="share_buttons">
