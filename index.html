@@ -9,14 +9,14 @@ div#game_main{
 }
 div#game_main, div#map_canvas{
   width: 320px;
-}
-div#map_canvas{
   height: 240px;
+  overflow: hidden;
 }
 #character{position:absolute; left:152px; top:112px; width: 16px; height: 16px; z-index:99; overflow: hidden}
 #character img{position: relative; top: 32px;}
 
 #game_bottom{
+  width: 320px;
   margin: .5em 0;
   position: relative;
 }
@@ -45,16 +45,17 @@ div.footer{ margin-top: 2em; }
   <div id="game_main">
     <div id="character"><img src="valiant.gif" width="16" height="128"></div>
     <div id="map_canvas"></div>
+  </div>
 
-    <div id="game_bottom">
-      <div id="game_control">
-	<button value="u">up</button><br>
-	<button value="l">left</button><button value="r">right</button><br>
-	<button value="d">down</button><br>
-      </div>
-      <div id="game_status">
-	<span id="check_points"></span>
-      </div>
+  <div id="game_bottom">
+    <div id="game_control">
+      <button value="u">up</button><br>
+      <button value="l">left</button><button value="r">right</button><br>
+      <button value="d">down</button><br>
+    </div>
+    <div id="game_status">
+      <span id="check_points"></span>
+      <div id="game_command"></div>
     </div>
   </div>
   <div class="footer">
