@@ -1,6 +1,9 @@
+var debug = (location.hash == "#debug");
+
 function initialize() {
+    var x = 258, y = 170;
     var map = new Map();
-    var mainCharacter = new MainCharacter(map);
+    var mainCharacter = new MainCharacter(map, x, y);
     var controller = new Controller(mainCharacter);
 }
 
@@ -23,7 +26,7 @@ Map.prototype = {
 	    isPng: true	
 	};
 	var _8bitMapType = new google.maps.ImageMapType(_8bitTile);
-	var myLatlng = new google.maps.LatLng(50.994213,1.76938);
+	var myLatlng = new google.maps.LatLng(50.958426723359935, 1.7578125);
 	var myOptions = {
 	    zoom: 5,
 	    center: myLatlng,
@@ -40,22 +43,27 @@ Map.prototype = {
 	this.map.panBy(diff_x * 16, diff_y * 16);
     },
 
+    // coordinate to Point and LatLng
+    getPositionInfo: function(x, y) {
+	var proj = this.map.getProjection();
+	if (this.map.getZoom() != 5) { alert('not implemented'); return; }
+	var p = new google.maps.Point(x * 0.5, (y + 1) * 0.5);
+	var latlng = proj.fromPointToLatLng(p);
+	return {
+	    game: [x, y],
+	    point: p,
+	    latlng: latlng
+	};
+    },
+
     // add marker to specified point (view coordinate)
     addMarker: function(x, y) {
-	console.log(x, y);
-	var proj = this.map.getProjection();
-	var c = this.map.getCenter();
-
-	var p = proj.fromLatLngToPoint(c);
-	var latlng = proj.fromPointToLatLng(p)
-	p.x += x * 0.5;
-	p.y += y * 0.5;
-	latlng = proj.fromPointToLatLng(p)
+	var pos = this.getPositionInfo(x, y);
 	marker = new google.maps.Marker({
-	    position: latlng,
+	    position: pos.latlng,
 	    map: this.map,
-	    flat: true,
-	    animation: google.maps.Animation.DROP
+	    animation: google.maps.Animation.DROP,
+	    flat: true
 	});
     }
 };
@@ -66,7 +74,7 @@ function Controller(mainCharacter){
     this.init();
 }
 Controller.prototype = {
-    INTERVAL: 250,
+    INTERVAL: debug ? 150 : 250,
     pressing: false,
     prev_move_time: 0,
     update_flag: false,
@@ -146,10 +154,10 @@ Controller.prototype = {
 };
 
 /**** MainCharacter ****/
-function MainCharacter(map){
+function MainCharacter(map, x, y){
     this.map = map;
-    this.x = 258;
-    this.y = 170;
+    this.x = x;
+    this.y = y;
     this.draw_direction = 2;
     this.checkPoint = new CheckPoint(map);
     this.init();
@@ -158,6 +166,10 @@ MainCharacter.prototype = {
     init: function() {
 	this.checkPoint.draw();
 	this.draw();
+
+	if (debug) {
+	    this.debugElm = $("<pre>").appendTo(document.body);
+	}
     },
 
     // direction: 0=up, 1=left, 2=down, 3=right
@@ -166,8 +178,8 @@ MainCharacter.prototype = {
 
 	var diff_x = (direction % 2 == 1 ? -(direction - 2) : 0);
 	var diff_y = (direction % 2 == 0 ?  (direction - 1) : 0);
-	var new_x = diff_x + this.x;
-	var new_y = diff_y + this.y;
+	var new_x = (diff_x + this.x + 512) % 512;
+	var new_y = (diff_y + this.y + 512) % 512;
 
 	var c = map_data.charAt(new_x + new_y * 512);
 	if (c == '1' || c == '2'){
@@ -188,16 +200,28 @@ MainCharacter.prototype = {
 	if (c == '3') {
 	    if (this.checkPoint.update(this.x, this.y)) {
 		var p = this.checkPoint.getNormalizedPosition(this.x, this.y);
-		console.log(p, this.x, this.y);
-		this.map.addMarker(p[0] - this.x + 1.5, p[1] - this.y + 0.5);
+		//this.map.addMarker(p[0] - this.x + 1.5, p[1] - this.y + 0.5);
+		this.map.addMarker(p[0] + 2.5, p[1] + 1);
 	    }
 	}
+
+	this.outputDebugInfo();
     },
 
     draw: function() {
 	this.update_flag = !this.update_flag;
 	var index = this.draw_direction * 2 + (this.update_flag ? 1 : 0);
 	$("#character img").css("top", (-index * 16) + "px");
+    },
+
+    outputDebugInfo: function() {
+	if (debug) {
+	    var p = this.map.getPositionInfo(this.x, this.y);
+	    this.debugElm.text(
+		"map: (" + this.x + "," + this.y +")\n" +
+		    "image: (" + Math.floor(this.y / 16) + "," + Math.floor(this.x / 16) + ")\n" + 
+		    "latlng: (" + p.latlng.lat() + "," + p.latlng.lng() + ")\n");
+	}
     }
 }
 
